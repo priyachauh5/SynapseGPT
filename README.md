@@ -22,6 +22,41 @@ SynapseGPT demonstrates the development of an AI-enabled web application with a 
 
 ---
 
+## Project Structure
+    SynapseGPT/
+    ├── Backend/
+    │   ├── models/
+    │   │   ├── Thread.js      # Mongoose schema for conversations & messages
+    │   │   └── User.js        # Mongoose schema for user credentials
+    │   ├── routes/
+    │   │   ├── auth.js        # Express routes for /signup and /login
+    │   │   └── chat.js        # Chat routes & OpenRouter API client
+    │   ├── utils/
+    │   │   └── openrouter.js  # OpenRouter completion helper
+    │   ├── .env                  # Secrets (MONGODB_URI, OPENROUTER_API_KEY, JWT_SECRET)
+    │   ├── package.json  # Node.js dependencies (Express, Mongoose, etc.)
+    │   └── server.js        # Express server entry point & DB connection
+    │
+    └── Frontend/
+        ├── src/
+        │   ├── assets/              # Static images (logos)
+        │   ├── pages/
+        │   │   ├── Home.jsx      # Landing page
+        │   │   ├── Login.jsx    # User login form
+        │   │   └── Signup.jsx  # User registration form
+        │   ├── api.js              # Client-side API fetch wrappers
+        │   ├── App.jsx            # Router, PrivateRoute & Chat layout state
+        │   ├── Chat.jsx          # Message bubbles & animated typewriter
+        │   ├── ChatWindow.jsx  # Top navbar, input box & submit logic
+        │   ├── MyContext.jsx    # React Context for cross-component state
+        │   ├── Sidebar.jsx        # Chat history list, thread selection & delete
+        │   ├── main.jsx          # React DOM entry point
+        │   ├── App.css, Chat.css, ChatWindow.css, Sidebar.css
+        ├── index.html        # HTML shell loading FontAwesome
+        ├── package.json  # React 19, Vite, React Router v7
+        └── vite.config.js
+  ──────
+
 ## 🛠️ Tech Stack
 
 | Technology | Purpose |
@@ -35,7 +70,51 @@ SynapseGPT demonstrates the development of an AI-enabled web application with a 
 | **REST APIs** | Frontend-backend communication |
 | **Git & GitHub** | Version control |
 
+##  End-to-End Data Flow
 
+    ┌────────────────┐       ┌────────────────────────┐                ┌─────────┐       ┌────────────────┐ ┌──────┐
+    │ React Frontend │       │ Express Server (:8080) │                │ MongoDB │       │ OpenRouter API │ │ User │
+    └────────────────┘       └────────────────────────┘                └─────────┘       └────────────────┘ └──────┘
+             │                            │                                 │                     │             │
+             ◄───────────────────────────Types prompt & clicks Send / presses Enter─────────────────────────────│
+             │                            │                                 │                     │             │
+             │ Sets loading = true, clears input ─┐                         │                     │             │
+             │◄─┘                         │                                 │                     │             │
+             │                            │                                 │                     │             │
+             │POST /api/chat { threadId, m►ssage }                          │                     │             │
+             │                            │                                 │                     │             │
+             │                            │──Thread.findOne({ threadId })───►                     │             │┤ alt Thread does not exist ├
+             │                            │                                 │                     │             │
+             │                            │new Thread({ threadId, title: mes►age, messages: [userMsg] })        │
+             │                            │                                 │                     │             │
+             │                            │─thread.messages.push(userMsg)───►                     │             │
+             │                            │                                 │                     │             │
+             │                            │─────────POST /chat/completions (OpenRouter)───────────►             │
+             │                            │                                 │                     │             │
+             │                            ◄JSON { choices: [ { message: { content: "..." } } ] }┈┈│             │
+             │                            │                                 │                     │             │
+             │                            │thread.messages.push(assistantMsg►, save()             │             │
+             │                            │                                 │                     │             │
+             ◄┈┈┈JSON { reply: "..." }┈┈┈┈│                                 │                     │             │
+             │                            │                                 │                     │             │
+             │ setReply(reply), loading = false ─┐                          │                     │             │
+             │◄─┘                         │                                 │                     │             │
+             │                            │                                 │                     │             │
+             │ Typewriter interval runs (word by word) ─┐                   │                     │             │
+             │◄─┘                         │                                 │                     │             │
+             │                            │                                 │                     │             │
+             │ Markdown rendered via rehype-highlight ─┐                    │                     │             │
+             │◄─┘                         │                                 │                     │             │
+             │                            │                                 │                     │             │
+             │GET /api/thread (Sidebar ref►esh)                             │                     │             │
+             │                            │                                 │                     │             │
+             │                            │Thread.find().sort({ updatedAt: -► })                  │             │
+             │                            │                                 │                     │             │
+             │                            ◄┈┈┈┈┈┈┈┈┈┈┈┈threads┈┈┈┈┈┈┈┈┈┈┈┈┈┈│                     │             │
+             │                            │                                 │                     │             │
+             ◄┈┈┈┈Updated thread list┈┈┈┈┈│                                 │                     │             │
+             │                            │                                 │                     │             │
+  ──────
 
 ---
 
@@ -69,31 +148,6 @@ SynapseGPT demonstrates the development of an AI-enabled web application with a 
                     └──────────┘  └────────────────┘
 
 
-📂 Project Structure
-
-SynapseGPT/
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   └── App.jsx
-│   │
-│   └── package.json
-│
-├── backend/
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
-│   ├── middleware/
-│   ├── config/
-│   ├── server.js
-│   └── package.json
-│
-├── .env
-├── .gitignore
-└── README.md
 
 🔄 Chat Flow
 
