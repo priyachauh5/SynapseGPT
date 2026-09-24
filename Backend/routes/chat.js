@@ -68,10 +68,10 @@ router.delete("/thread/:threadId", async (req, res) => {
 });
 
 router.post("/chat", async(req, res) => {
-    const {threadId, message} = req.body;
+    const {threadId, message, editIndex, messageId} = req.body;
 
     if(!threadId || !message) {
-        res.status(400).json({error: "missing required fields"});
+        return res.status(400).json({error: "missing required fields"});
     }
 
     try {
@@ -79,22 +79,91 @@ router.post("/chat", async(req, res) => {
 
         if(!thread) {
             //create a new thread in Db
+            const assistantReply = await getOpenRouterResponse(message);
             thread = new Thread({
                 threadId,
                 title: message,
-                messages: [{role: "user", content: message}]
+                messages: [
+                    {role: "user", content: message, timestamp: new Date()},
+                    {role: "assistant", content: assistantReply, timestamp: new Date()}
+                ]
             });
-        } else {
-            thread.messages.push({role: "user", content: message});
+            await thread.save();
+
+            return res.json({
+                reply: assistantReply,
+                userMessage: thread.messages[0],
+                assistantMessage: thread.messages[1],
+                messages: thread.messages
+            });
         }
+
+        // If this is an EDIT request on an existing message
+        if (editIndex !== undefined && editIndex !== null) {
+            let targetIdx = -1;
+            if (messageId) {
+                targetIdx = thread.messages.findIndex(m => m._id && m._id.toString() === messageId.toString());
+            }
+            if (targetIdx === -1 && typeof editIndex === "number" && editIndex >= 0 && editIndex < thread.messages.length) {
+                targetIdx = editIndex;
+            }
+
+            if (targetIdx !== -1 && thread.messages[targetIdx].role === "user") {
+                // Update the edited user message
+                thread.messages[targetIdx].content = message;
+                thread.messages[targetIdx].timestamp = new Date();
+
+                // If editing the very first message, also update the thread title
+                if (targetIdx === 0) {
+                    thread.title = message;
+                }
+
+                // Regenerate the AI response using the edited question
+                const assistantReply = await getOpenRouterResponse(message);
+
+                // Replace the old response for that conversation point
+                let assistantMsg;
+                if (targetIdx + 1 < thread.messages.length && thread.messages[targetIdx + 1].role === "assistant") {
+                    thread.messages[targetIdx + 1].content = assistantReply;
+                    thread.messages[targetIdx + 1].timestamp = new Date();
+                    assistantMsg = thread.messages[targetIdx + 1];
+                } else {
+                    assistantMsg = { role: "assistant", content: assistantReply, timestamp: new Date() };
+                    thread.messages.splice(targetIdx + 1, 0, assistantMsg);
+                }
+
+                thread.updatedAt = new Date();
+                await thread.save();
+
+                return res.json({
+                    reply: assistantReply,
+                    userMessage: thread.messages[targetIdx],
+                    assistantMessage: assistantMsg,
+                    messages: thread.messages,
+                    editIndex: targetIdx
+                });
+            }
+        }
+
+        // Normal new message appending flow
+        thread.messages.push({role: "user", content: message, timestamp: new Date()});
 
         const assistantReply = await getOpenRouterResponse(message);
 
-        thread.messages.push({role: "assistant", content: assistantReply});
+        thread.messages.push({role: "assistant", content: assistantReply, timestamp: new Date()});
         thread.updatedAt = new Date();
 
         await thread.save();
-        res.json({reply: assistantReply});
+
+        const savedUserMsg = thread.messages[thread.messages.length - 2];
+        const savedAssistantMsg = thread.messages[thread.messages.length - 1];
+
+        res.json({
+            reply: assistantReply,
+            userMessage: savedUserMsg,
+            assistantMessage: savedAssistantMsg,
+            messages: thread.messages
+        });
     } catch(err) {
         console.log(err);
         res.status(500).json({error: "something went wrong"});

@@ -6,7 +6,7 @@ import {ScaleLoader} from "react-spinners";
 import { useNavigate } from "react-router-dom";
 
 function ChatWindow() {
-    const {prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat} = useContext(MyContext);
+    const {prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat, setAllThreads} = useContext(MyContext);
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
@@ -20,17 +20,21 @@ function ChatWindow() {
     };
 
     const getReply = async () => {
+        if (!prompt.trim() || loading) return;
+
+        const currentPrompt = prompt.trim();
         setLoading(true);
         setNewChat(false);
+        setPrompt("");
 
-        console.log("message ", prompt, " threadId ", currThreadId);
+        console.log("message ", currentPrompt, " threadId ", currThreadId);
         const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: prompt,
+                message: currentPrompt,
                 threadId: currThreadId
             })
         };
@@ -39,29 +43,44 @@ function ChatWindow() {
             const response = await fetch("http://localhost:8080/api/chat", options);
             const res = await response.json();
             console.log(res);
-            setReply(res.reply);
+
+            if (res.reply) {
+                // Update threads list in sidebar if this is a new conversation
+                if (setAllThreads) {
+                    setAllThreads(prev => {
+                        const exists = prev.some(t => t.threadId === currThreadId);
+                        if (!exists) {
+                            return [{ threadId: currThreadId, title: currentPrompt }, ...prev];
+                        }
+                        return prev;
+                    });
+                }
+
+                const now = new Date().toISOString();
+                setPrevChats(prevChats => [
+                    ...prevChats,
+                    {
+                        role: "user",
+                        content: currentPrompt,
+                        timestamp: res.userMessage?.timestamp || now,
+                        _id: res.userMessage?._id
+                    },
+                    {
+                        role: "assistant",
+                        content: res.reply,
+                        timestamp: res.assistantMessage?.timestamp || now,
+                        _id: res.assistantMessage?._id
+                    }
+                ]);
+
+                setReply(res.reply);
+            }
         } catch(err) {
             console.log(err);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
-    }
-
-    //Append new chat to prevChats
-    useEffect(() => {
-        if(prompt && reply) {
-            setPrevChats(prevChats => (
-                [...prevChats, {
-                    role: "user",
-                    content: prompt
-                },{
-                    role: "assistant",
-                    content: reply
-                }]
-            ));
-        }
-
-        setPrompt("");
-    }, [reply]);
+    };
 
 
     const handleProfileClick = () => {
@@ -84,7 +103,7 @@ function ChatWindow() {
                     <div className="dropDownItem" onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
                 </div>
             }
-            <Chat></Chat>
+            <Chat isMainLoading={loading} />
 
             <ScaleLoader color="#fff" loading={loading}>
             </ScaleLoader>
