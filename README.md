@@ -5,6 +5,11 @@ A full-stack AI-powered chatbot application inspired by ChatGPT, built with mode
 SynapseGPT demonstrates the development of an AI-enabled web application with a **React frontend, Node.js/Express backend, MongoDB database integration, REST APIs, authentication workflows, and secure environment configuration**.
 
 ---
+## Dashboard
+<img width="1216" height="774" alt="synapseGPT_Dashboard" src="https://github.com/user-attachments/assets/6b23cf43-9ec9-4b24-9380-7758e9b786af" />
+
+
+---
 
 ## 🚀 Features
 
