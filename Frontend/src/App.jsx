@@ -39,7 +39,7 @@ import './App.css';
 import Sidebar from "./Sidebar.jsx";
 import ChatWindow from "./ChatWindow.jsx";
 import { MyContext } from "./MyContext.jsx";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { v1 as uuidv1 } from "uuid";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -61,6 +61,28 @@ function ChatLayout() {
   const [prevChats, setPrevChats] = useState([]);
   const [newChat, setNewChat] = useState(true);
   const [allThreads, setAllThreads] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth > 768;
+    }
+    return true;
+  });
+
+  // Handle dynamic responsive transitions across mobile and desktop breakpoints
+  useEffect(() => {
+    let prevIsDesktop = window.innerWidth > 768;
+
+    const handleResize = () => {
+      const isDesktop = window.innerWidth > 768;
+      if (isDesktop !== prevIsDesktop) {
+        prevIsDesktop = isDesktop;
+        setSidebarOpen(isDesktop);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const providerValues = {
     prompt, setPrompt,
@@ -68,7 +90,8 @@ function ChatLayout() {
     currThreadId, setCurrThreadId,
     newChat, setNewChat,
     prevChats, setPrevChats,
-    allThreads, setAllThreads
+    allThreads, setAllThreads,
+    sidebarOpen, setSidebarOpen
   };
 
   return (

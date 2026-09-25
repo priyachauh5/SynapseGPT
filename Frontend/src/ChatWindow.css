@@ -2,11 +2,15 @@
     background-color: #212121;
     height: 100vh;
     width: 100%;
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
 /* navbar */
@@ -16,14 +20,60 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0.8rem 1.5rem;
+    box-sizing: border-box;
 }
 
-.navbar span {
-    margin: 1rem 2rem;
+.navbarLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.sidebarToggleBtn {
+    background: transparent;
+    border: none;
+    color: #b4b4b4;
+    cursor: pointer;
+    font-size: 1.15rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
+    user-select: none;
+}
+
+.sidebarToggleBtn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+/* On desktop, hide navbar toggle when sidebar is open to avoid duplicate controls */
+@media (min-width: 769px) {
+    .sidebarToggleBtn.sidebarOpen {
+        display: none;
+    }
+}
+
+.navbarTitle {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #ececec;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+}
+
+.navbarTitle i {
+    font-size: 0.75rem;
+    color: #888;
 }
 
 .userIconDiv {
-    margin: 1rem 2rem;
+    margin: 0;
 }
 
 .userIcon {
@@ -55,7 +105,7 @@
     align-items: center;
 }
 
-input {
+.inputBox input {
     width: 100%;
     border: none;
     background-color: rgba(255, 255, 255, 0.05);
@@ -69,7 +119,7 @@ input {
                 rgba(0, 0, 0, 0.05) 0 -3px 5px;
 }
 
-input:focus {
+.inputBox input:focus {
     outline: none;
 }
 

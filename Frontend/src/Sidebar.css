@@ -1,87 +1,480 @@
+/* ============================================================
+   ChatGPT-Style Left Sidebar Styling for SynapseGPT
+   ============================================================ */
+
 .sidebar {
     background-color: #171717;
     color: #b4b4b4;
     height: 100vh;
-    width: 320px;
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 100;
+    overflow: hidden;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.25s ease,
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
 }
 
+/* Collapsed state on desktop */
+.sidebar.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    opacity: 0;
+    pointer-events: none;
+    border-right: none;
+}
 
-button {
+/* Inner fixed width container to prevent content distortion during width transition */
+.sidebarInner {
+    width: 260px;
+    height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: transparent;
-    border: solid 0.5px rgba(255, 255, 255, 0.5);
-    cursor: pointer;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
-.logo {
-    height: 25px;
-    width: 25px;
-    background-color: #fff;
+/* Top section: Brand, Close button, New Chat, Search */
+.sidebarTop {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding-top: 6px;
+}
+
+/* Header bar with Brand and Collapse Button */
+.sidebarHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 6px 14px;
+}
+
+.sidebarBrand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+
+.sidebarBrandLogo {
+    height: 22px;
+    width: 22px;
     border-radius: 50%;
     object-fit: cover;
+    background-color: #fff;
 }
 
-button span {
-    font-size: 20px;
+.sidebarBrandText {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ececec;
+    letter-spacing: -0.2px;
 }
 
-button:hover {
-    background-color: rgba(180, 180, 180, 0.05);
-}
-
-.history {
-    margin: 10px;
-    padding: 10px;
-    height: 100%;
-}
-
-.history li {
-    list-style-type: none;
+.sidebarHeaderCloseBtn {
+    background: transparent;
+    border: none;
+    color: #888;
     cursor: pointer;
-    padding: 2px 5px;
-    margin-bottom: 0.3rem;
-    font-size: 14px;
-    border: solid 10px transparent;
-    position: relative;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
+    user-select: none;
+    margin: 0;
 }
 
-.history li:hover {
-    background-color: rgba(180, 180, 180, 0.05);
-    border-radius: 10px;
-}
-
-.sign {
-    padding: 10px;
-    margin: 10px;
-    font-size: 14px;
-    text-align: center;
-    border-top: solid 0.25px rgba(255, 255, 255, 0.5);
-}
-
-.fa-trash {
-    opacity: 0;
-    position: absolute;
-    right: 0;
-}
-
-.history li:hover .fa-trash {
-    opacity: 1;
+.sidebarHeaderCloseBtn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
     color: #fff;
 }
 
-.fa-trash:hover {
+/* A. New Chat Button */
+.newChatBtn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 12px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.newChatBtn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.newChatBtnLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.newChatPlusIcon {
+    font-size: 0.85rem;
+    color: #ececec;
+}
+
+.newChatBtnText {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #ececec;
+}
+
+.newChatIcon {
+    font-size: 0.9rem;
+    color: #b4b4b4;
+}
+
+/* B. Search Box */
+.sidebarSearchWrapper {
+    padding: 4px 12px 10px 12px;
+}
+
+.sidebarSearchBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 6px 10px;
+    transition: border-color 0.15s, background-color 0.15s;
+    box-sizing: border-box;
+}
+
+.sidebarSearchBox:focus-within {
+    border-color: #339cff;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.searchIcon {
+    font-size: 0.8rem;
+    color: #737373;
+    flex-shrink: 0;
+}
+
+/* Overriding any global input styles specifically for search */
+.sidebar .sidebarSearchInput {
+    width: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 2px 0 !important;
+    font-size: 0.82rem !important;
+    color: #ececec !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+}
+
+.sidebarSearchInput::placeholder {
+    color: #707070;
+}
+
+.clearSearchBtn {
+    background: transparent !important;
+    border: none !important;
+    color: #888 !important;
+    cursor: pointer !important;
+    padding: 2px 4px !important;
+    font-size: 0.75rem !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px !important;
+}
+
+.clearSearchBtn:hover {
+    color: #ececec !important;
+}
+
+/* Scrollable area for Pinned & Recents */
+.sidebarScrollArea {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+/* Scrollbar styling */
+.sidebarScrollArea::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebarScrollArea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebarScrollArea::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+.sidebarScrollArea::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Section styling */
+.sidebarSection {
+    margin-bottom: 12px;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #737373;
+    user-select: none;
+}
+
+.sectionHeaderIcon {
+    font-size: 0.7rem;
+}
+
+/* History List & Items */
+.history {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.historyItem {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 7px 10px;
+    margin-bottom: 2px;
+    font-size: 0.84rem;
+    border-radius: 8px;
+    color: #b4b4b4;
+    position: relative;
+    transition: background-color 0.15s, color 0.15s;
+    user-select: none;
+}
+
+.historyItem:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.historyItem.highlighted {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-weight: 500;
+}
+
+.itemTitleContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.itemMessageIcon {
+    font-size: 0.8rem;
+    color: #737373;
+    flex-shrink: 0;
+}
+
+.itemTitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.84rem;
+    flex: 1;
+}
+
+/* Item Action Buttons (Pin, Delete) */
+.itemActions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+    margin-left: 4px;
+}
+
+.historyItem:hover .itemActions {
+    opacity: 1;
+}
+
+.historyItem.highlighted .itemActions {
+    opacity: 1;
+}
+
+.itemActionBtn {
+    background: transparent !important;
+    border: none !important;
+    color: #888 !important;
+    cursor: pointer !important;
+    padding: 4px 6px !important;
+    margin: 0 !important;
+    border-radius: 4px !important;
+    font-size: 0.78rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: color 0.15s, background-color 0.15s !important;
+}
+
+.itemActionBtn:hover {
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Active Pin styling */
+.pinBtn.activePin {
+    color: #339cff !important;
+}
+
+.pinBtn.activePin:hover {
+    color: #60b2ff !important;
+}
+
+/* Pinned conversations: Pin icon is clearly visible even when not hovered */
+.historyItem.isPinned .itemActions {
+    opacity: 1;
+}
+
+.historyItem.isPinned .deleteBtn {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.historyItem.isPinned:hover .deleteBtn,
+.historyItem.isPinned.highlighted .deleteBtn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.historyItem.isPinned .pinBtn.activePin {
+    color: #b4b4b4 !important;
+    opacity: 0.85;
+}
+
+.historyItem.isPinned:hover .pinBtn.activePin,
+.historyItem.isPinned.highlighted .pinBtn.activePin {
+    color: #339cff !important;
+    opacity: 1;
+}
+
+/* Delete trash hover color */
+.deleteBtn:hover {
     color: #f87171 !important;
 }
 
-.highlighted {
-    background-color: rgba(180, 180, 180, 0.05);
-    border-radius: 10px;
+/* Empty section notice */
+.emptySectionText {
+    font-size: 0.76rem;
+    color: #666;
+    padding: 4px 10px;
+    margin: 0;
+    font-style: italic;
+    user-select: none;
+}
+
+/* Footer Signature */
+.sign {
+    padding: 10px 14px;
+    margin: 0 10px;
+    font-size: 13px;
+    text-align: center;
+    border-top: solid 1px rgba(255, 255, 255, 0.08);
+    color: #888;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.sign p {
+    margin: 0;
+}
+
+/* ============================================================
+   Responsive Behavior (Mobile / Small Screens <= 768px)
+   ============================================================ */
+
+/* On desktop, backdrop must not render or affect the .app flex layout */
+.sidebarBackdrop {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        height: 100vh;
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+        z-index: 1050;
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.7);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.25s ease;
+    }
+
+    .sidebar.collapsed {
+        transform: translateX(-100%);
+        width: 280px !important;
+        min-width: 280px !important;
+        max-width: 280px !important;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .sidebarInner {
+        width: 280px;
+    }
+
+    .sidebarBackdrop {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(2px);
+        z-index: 1040;
+    }
+
+    .itemActions {
+        opacity: 0.85;
+    }
 }

@@ -6,7 +6,7 @@ import {ScaleLoader} from "react-spinners";
 import { useNavigate } from "react-router-dom";
 
 function ChatWindow() {
-    const {prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat, setAllThreads} = useContext(MyContext);
+    const {prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat, setAllThreads, sidebarOpen, setSidebarOpen} = useContext(MyContext);
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
@@ -45,18 +45,43 @@ function ChatWindow() {
             console.log(res);
 
             if (res.reply) {
-                // Update threads list in sidebar if this is a new conversation
+                const now = new Date().toISOString();
+                const newMessages = [
+                    {
+                        role: "user",
+                        content: currentPrompt,
+                        timestamp: res.userMessage?.timestamp || now,
+                        _id: res.userMessage?._id
+                    },
+                    {
+                        role: "assistant",
+                        content: res.reply,
+                        timestamp: res.assistantMessage?.timestamp || now,
+                        _id: res.assistantMessage?._id
+                    }
+                ];
+
+                // Update threads list in sidebar: update timestamp, append new messages, and move to top
                 if (setAllThreads) {
                     setAllThreads(prev => {
-                        const exists = prev.some(t => t.threadId === currThreadId);
-                        if (!exists) {
-                            return [{ threadId: currThreadId, title: currentPrompt }, ...prev];
+                        const existing = prev.find(t => t.threadId === currThreadId);
+                        if (!existing) {
+                            return [{
+                                threadId: currThreadId,
+                                title: currentPrompt,
+                                updatedAt: now,
+                                messages: newMessages
+                            }, ...prev];
                         }
-                        return prev;
+                        const updated = {
+                            ...existing,
+                            updatedAt: now,
+                            messages: [...(existing.messages || []), ...newMessages]
+                        };
+                        return [updated, ...prev.filter(t => t.threadId !== currThreadId)];
                     });
                 }
 
-                const now = new Date().toISOString();
                 setPrevChats(prevChats => [
                     ...prevChats,
                     {
@@ -90,7 +115,18 @@ function ChatWindow() {
     return (
         <div className="chatWindow">
             <div className="navbar">
-                <span>SynapseGPT <i className="fa-solid fa-chevron-down"></i></span>
+                <div className="navbarLeft">
+                    <button
+                        type="button"
+                        className={`sidebarToggleBtn ${sidebarOpen ? "sidebarOpen" : "sidebarClosed"}`}
+                        onClick={() => setSidebarOpen(prev => !prev)}
+                        title={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+                        aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+                    >
+                        <i className="fa-solid fa-bars"></i>
+                    </button>
+                    <span className="navbarTitle">SynapseGPT <i className="fa-solid fa-chevron-down"></i></span>
+                </div>
                 <div className="userIconDiv" onClick={handleProfileClick}>
                     <span className="userIcon"><i className="fa-solid fa-user"></i></span>
                 </div>
