@@ -2,7 +2,6 @@ import "./Sidebar.css";
 import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
-import blackLogo from "./assets/blacklogo.png";
 
 function Sidebar() {
     const {
@@ -60,6 +59,7 @@ function Sidebar() {
 
     useEffect(() => {
         getAllThreads();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Existing New Chat logic
@@ -203,11 +203,14 @@ function Sidebar() {
                 <div className="sidebarInner">
                     {/* Top Fixed Area */}
                     <div className="sidebarTop">
-                        {/* Header with SynapseGPT brand and Collapse button */}
+                        {/* Header with SynapseNEXUS brand matching Login & Home */}
                         <div className="sidebarHeader">
                             <div className="sidebarBrand">
-                                <img src={blackLogo} alt="SynapseGPT" className="sidebarBrandLogo" />
-                                <span className="sidebarBrandText">SynapseGPT</span>
+                                <div className="sidebarBrandBadge">
+                                    <i className="fa-solid fa-brain"></i>
+                                </div>
+                                <span className="sidebarBrandText">SynapseNEXUS</span>
+                                <span className="sidebarBrandBadgePill">AI</span>
                             </div>
                             <button
                                 type="button"
@@ -216,7 +219,7 @@ function Sidebar() {
                                 title="Close sidebar"
                                 aria-label="Close sidebar"
                             >
-                                <i className="fa-solid fa-bars"></i>
+                                <i className="fa-solid fa-chevron-left"></i>
                             </button>
                         </div>
 
@@ -244,6 +247,7 @@ function Sidebar() {
                                     placeholder="Search conversations..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
+                                    aria-label="Search conversations"
                                 />
                                 {searchQuery && (
                                     <button
@@ -264,8 +268,13 @@ function Sidebar() {
                         {/* C. Pinned Section */}
                         <div className="sidebarSection">
                             <div className="sectionHeader">
-                                <i className="fa-solid fa-thumbtack sectionHeaderIcon"></i>
-                                <span>Pinned</span>
+                                <div className="sectionHeaderLeft">
+                                    <i className="fa-solid fa-thumbtack sectionHeaderIcon"></i>
+                                    <span>Pinned</span>
+                                </div>
+                                {pinnedThreads.length > 0 && (
+                                    <span className="sectionCountBadge">{pinnedThreads.length}</span>
+                                )}
                             </div>
                             {pinnedThreads.length > 0 ? (
                                 <ul className="history">
@@ -281,8 +290,13 @@ function Sidebar() {
                         {/* D. Recents Section */}
                         <div className="sidebarSection">
                             <div className="sectionHeader">
-                                <i className="fa-regular fa-clock sectionHeaderIcon"></i>
-                                <span>Recents</span>
+                                <div className="sectionHeaderLeft">
+                                    <i className="fa-regular fa-clock sectionHeaderIcon"></i>
+                                    <span>Recents</span>
+                                </div>
+                                {recentThreads.length > 0 && (
+                                    <span className="sectionCountBadge">{recentThreads.length}</span>
+                                )}
                             </div>
                             {recentThreads.length > 0 ? (
                                 <ul className="history">
@@ -299,8 +313,10 @@ function Sidebar() {
                     </div>
 
                     {/* Footer Signature */}
-                    <div className="sign">
-                        <p>By PriyaChauhan &hearts;</p>
+                    <div className="sidebarFooter">
+                        <p className="sidebarSignature">
+                            By PriyaChauhan &hearts;
+                        </p>
                     </div>
                 </div>
             </aside>

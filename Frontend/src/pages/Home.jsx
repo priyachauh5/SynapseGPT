@@ -14,7 +14,7 @@ export default function Home() {
           <div className="brand-icon-wrapper">
             <i className="fa-solid fa-brain"></i>
           </div>
-          <span className="brand-text">SynapseGPT</span>
+          <span className="brand-text">SynapseNEXUS</span>
           <span className="brand-badge">AI</span>
         </Link>
 
@@ -42,7 +42,7 @@ export default function Home() {
         </h1>
 
         <p className="hero-description">
-          Experience fluid, insightful conversations with SynapseGPT. Manage multi-topic
+          Experience fluid, insightful conversations with SynapseNEXUS. Manage multi-topic
           threads, brainstorm complex concepts, and boost your daily workflow with responsive AI.
         </p>
 
@@ -94,7 +94,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="home-footer">
         <div className="footer-brand">
-          <span>&copy; {new Date().getFullYear()} SynapseGPT. All rights reserved.</span>
+          <span>&copy; {new Date().getFullYear()} SynapseNEXUS. All rights reserved.</span>
         </div>
         <div className="footer-links">
           <Link to="/login" className="footer-link">Login</Link>

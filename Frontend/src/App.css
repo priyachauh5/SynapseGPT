@@ -1,6 +1,5 @@
+/* Base reset and global font styles */
 * {
-    color: #ececec;
-    font-family: Roboto, 'Open Sans', 'Helvetica Neue', sans-serif;
     box-sizing: border-box;
 }
 
@@ -8,13 +7,180 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
+/* ============================================================
+   SynapseNEXUS Theme System (Dark, Light, Fancy AI Theme)
+   ============================================================ */
+
+/* 1. Dark Theme (Obsidian Night - Default, matches Auth & Home) */
+.app.theme-dark {
+    --bg-main: #0b0f17;
+    --bg-gradient: radial-gradient(ellipse 85% 60% at 50% -15%, rgba(99, 102, 241, 0.2), transparent 70%),
+                   radial-gradient(circle 500px at 85% 85%, rgba(14, 165, 233, 0.1), transparent 70%),
+                   radial-gradient(circle 400px at 15% 40%, rgba(139, 92, 246, 0.08), transparent 70%);
+    --sidebar-bg: #0d121d;
+    --sidebar-border: rgba(255, 255, 255, 0.08);
+    --navbar-bg: rgba(11, 15, 23, 0.85);
+    --navbar-border: rgba(255, 255, 255, 0.07);
+    --card-bg: rgba(18, 24, 38, 0.72);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-hover-border: rgba(99, 102, 241, 0.35);
+    --user-msg-bg: linear-gradient(135deg, rgba(99, 102, 241, 0.22) 0%, rgba(79, 70, 229, 0.18) 100%);
+    --user-msg-border: rgba(99, 102, 241, 0.35);
+    --user-msg-text: #f8fafc;
+    --gpt-msg-bg: rgba(18, 24, 38, 0.65);
+    --gpt-msg-border: rgba(255, 255, 255, 0.07);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --input-bg: rgba(18, 24, 38, 0.85);
+    --input-border: rgba(255, 255, 255, 0.12);
+    --input-focus-border: #6366f1;
+    --input-focus-ring: rgba(99, 102, 241, 0.25);
+    --accent-primary: #6366f1;
+    --accent-hover: #4f46e5;
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    --accent-glow: 0 4px 18px rgba(99, 102, 241, 0.35);
+    --dropdown-bg: rgba(18, 24, 38, 0.95);
+    --dropdown-border: rgba(255, 255, 255, 0.12);
+    --hover-surface: rgba(255, 255, 255, 0.07);
+    --active-surface: rgba(99, 102, 241, 0.14);
+    --code-bg: #0b0f17;
+    --code-border: rgba(255, 255, 255, 0.09);
+    --badge-bg: rgba(99, 102, 241, 0.15);
+    --badge-color: #818cf8;
+    --badge-border: rgba(99, 102, 241, 0.3);
+    --shadow-elevation: 0 16px 36px -10px rgba(0, 0, 0, 0.55), 0 0 20px rgba(99, 102, 241, 0.1);
+    --scroll-thumb: rgba(255, 255, 255, 0.15);
+    --scroll-thumb-hover: rgba(255, 255, 255, 0.25);
+}
+
+/* 2. Light Theme (Daylight Clean - Modern Minimalist) */
+.app.theme-light {
+    --bg-main: #f8fafc;
+    --bg-gradient: radial-gradient(ellipse 85% 60% at 50% -15%, rgba(99, 102, 241, 0.08), transparent 70%),
+                   radial-gradient(circle 500px at 85% 85%, rgba(14, 165, 233, 0.06), transparent 70%);
+    --sidebar-bg: #ffffff;
+    --sidebar-border: #e2e8f0;
+    --navbar-bg: rgba(248, 250, 252, 0.85);
+    --navbar-border: #e2e8f0;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --card-hover-border: #818cf8;
+    --user-msg-bg: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    --user-msg-border: transparent;
+    --user-msg-text: #ffffff;
+    --gpt-msg-bg: #ffffff;
+    --gpt-msg-border: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --input-bg: #ffffff;
+    --input-border: #cbd5e1;
+    --input-focus-border: #6366f1;
+    --input-focus-ring: rgba(99, 102, 241, 0.2);
+    --accent-primary: #6366f1;
+    --accent-hover: #4f46e5;
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    --accent-glow: 0 4px 16px rgba(99, 102, 241, 0.25);
+    --dropdown-bg: #ffffff;
+    --dropdown-border: #e2e8f0;
+    --hover-surface: #f1f5f9;
+    --active-surface: rgba(99, 102, 241, 0.1);
+    --code-bg: #f8fafc;
+    --code-border: #e2e8f0;
+    --badge-bg: rgba(99, 102, 241, 0.1);
+    --badge-color: #4f46e5;
+    --badge-border: rgba(99, 102, 241, 0.2);
+    --shadow-elevation: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+    --scroll-thumb: #cbd5e1;
+    --scroll-thumb-hover: #94a3b8;
+}
+
+/* 3. Fancy / AI Theme (Cyberpunk Neon Mesh Glassmorphism) */
+.app.theme-fancy {
+    --bg-main: #070913;
+    --bg-gradient: radial-gradient(ellipse 90% 70% at 20% -10%, rgba(139, 92, 246, 0.32), transparent 60%),
+                   radial-gradient(circle 550px at 85% 85%, rgba(56, 189, 248, 0.24), transparent 65%),
+                   radial-gradient(circle 450px at 50% 50%, rgba(236, 72, 153, 0.14), transparent 70%);
+    --sidebar-bg: rgba(11, 13, 29, 0.94);
+    --sidebar-border: rgba(139, 92, 246, 0.28);
+    --navbar-bg: rgba(7, 9, 19, 0.88);
+    --navbar-border: rgba(139, 92, 246, 0.22);
+    --card-bg: rgba(18, 20, 44, 0.74);
+    --card-border: rgba(139, 92, 246, 0.25);
+    --card-hover-border: rgba(217, 70, 239, 0.55);
+    --user-msg-bg: linear-gradient(135deg, rgba(147, 51, 234, 0.38) 0%, rgba(56, 189, 248, 0.26) 100%);
+    --user-msg-border: rgba(192, 132, 252, 0.48);
+    --user-msg-text: #ffffff;
+    --gpt-msg-bg: rgba(18, 20, 44, 0.72);
+    --gpt-msg-border: rgba(139, 92, 246, 0.22);
+    --text-primary: #ffffff;
+    --text-secondary: #cbd5e1;
+    --text-muted: #818cf8;
+    --input-bg: rgba(16, 19, 44, 0.9);
+    --input-border: rgba(147, 51, 234, 0.4);
+    --input-focus-border: #c084fc;
+    --input-focus-ring: rgba(168, 85, 247, 0.4);
+    --accent-primary: #a855f7;
+    --accent-hover: #9333ea;
+    --accent-gradient: linear-gradient(135deg, #a855f7 0%, #38bdf8 50%, #ec4899 100%);
+    --accent-glow: 0 4px 22px rgba(168, 85, 247, 0.5);
+    --dropdown-bg: rgba(15, 17, 39, 0.96);
+    --dropdown-border: rgba(147, 51, 234, 0.4);
+    --hover-surface: rgba(139, 92, 246, 0.14);
+    --active-surface: rgba(168, 85, 247, 0.22);
+    --code-bg: #090a18;
+    --code-border: rgba(139, 92, 246, 0.28);
+    --badge-bg: rgba(168, 85, 247, 0.2);
+    --badge-color: #d8b4fe;
+    --badge-border: rgba(168, 85, 247, 0.4);
+    --shadow-elevation: 0 16px 40px -10px rgba(112, 26, 236, 0.35);
+    --scroll-thumb: rgba(168, 85, 247, 0.35);
+    --scroll-thumb-hover: rgba(168, 85, 247, 0.55);
+}
+
+/* ============================================================
+   Chat Layout App Shell
+   ============================================================ */
+
 .app {
-    background-color: #212121;
     display: flex;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
     position: relative;
+    background-color: var(--bg-main);
+    background-image: var(--bg-gradient);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.app * {
+    color: inherit;
+    box-sizing: border-box;
+}
+
+/* App-level smooth scrollbar styling */
+.app ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.app ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.app ::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 9999px;
+}
+
+.app ::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover);
 }

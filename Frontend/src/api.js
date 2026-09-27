@@ -21,7 +21,7 @@ export const sendMessage = async (message) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}` // 🔥 IMPORTANT
+      Authorization: `Bearer ${localStorage.getItem("token")}` // IMPORTANT
     },
     body: JSON.stringify({ message }),
   });

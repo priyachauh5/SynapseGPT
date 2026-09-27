@@ -1,40 +1,3 @@
-// import './App.css';
-// import Sidebar from "./Sidebar.jsx";
-// import ChatWindow from "./ChatWindow.jsx";
-// import {MyContext} from "./MyContext.jsx";
-// import { useState } from 'react';
-// import {v1 as uuidv1} from "uuid";
-
-// function App() {
-//   const [prompt, setPrompt] = useState("");
-//   const [reply, setReply] = useState(null);
-//   const [currThreadId, setCurrThreadId] = useState(uuidv1());
-//   const [prevChats, setPrevChats] = useState([]); //stores all chats of curr threads
-//   const [newChat, setNewChat] = useState(true);
-//   const [allThreads, setAllThreads] = useState([]);
-
-//   const providerValues = {
-//     prompt, setPrompt,
-//     reply, setReply,
-//     currThreadId, setCurrThreadId,
-//     newChat, setNewChat,
-//     prevChats, setPrevChats,
-//     allThreads, setAllThreads
-//   }; 
-
-//   return (
-//     <div className='app'>
-//       <MyContext.Provider value={providerValues}>
-//           <Sidebar></Sidebar>
-//           <ChatWindow></ChatWindow>
-//         </MyContext.Provider>
-//     </div>
-//   )
-// }
-
-// export default App
-
-
 import './App.css';
 import Sidebar from "./Sidebar.jsx";
 import ChatWindow from "./ChatWindow.jsx";
@@ -47,13 +10,13 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
-// 🔐 Protected Route
+//  Protected Route
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/login" />;
 }
 
-// 💬 Chat Layout (your existing UI)
+// Chat Layout (your existing UI)
 function ChatLayout() {
   const [prompt, setPrompt] = useState("");
   const [reply, setReply] = useState(null);
@@ -67,6 +30,27 @@ function ChatLayout() {
     }
     return true;
   });
+
+  // Persistent theme state: 'dark' (default), 'light', or 'fancy' (AI theme)
+  const [theme, setTheme] = useState(() => {
+    try {
+      const savedTheme = localStorage.getItem("synapse_theme");
+      if (savedTheme === "light" || savedTheme === "dark" || savedTheme === "fancy") {
+        return savedTheme;
+      }
+    } catch (e) {
+      console.error("Failed to load theme from localStorage:", e);
+    }
+    return "dark";
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("synapse_theme", theme);
+    } catch (e) {
+      console.error("Failed to save theme to localStorage:", e);
+    }
+  }, [theme]);
 
   // Handle dynamic responsive transitions across mobile and desktop breakpoints
   useEffect(() => {
@@ -91,11 +75,12 @@ function ChatLayout() {
     newChat, setNewChat,
     prevChats, setPrevChats,
     allThreads, setAllThreads,
-    sidebarOpen, setSidebarOpen
+    sidebarOpen, setSidebarOpen,
+    theme, setTheme
   };
 
   return (
-    <div className='app'>
+    <div className={`app theme-${theme}`} data-theme={theme}>
       <MyContext.Provider value={providerValues}>
         <Sidebar />
         <ChatWindow />
@@ -104,20 +89,20 @@ function ChatLayout() {
   );
 }
 
-// 🚀 Main App with Routing
+// Main App with Routing
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* 🏠 Home Page */}
+        {/*  Home Page */}
         <Route path="/" element={<Home />} />
 
-        {/* 🔐 Auth Pages */}
+        {/*  Auth Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* 💬 Protected Chat */}
+        {/*  Protected Chat */}
         <Route 
           path="/chat" 
           element={

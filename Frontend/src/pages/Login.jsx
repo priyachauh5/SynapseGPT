@@ -18,7 +18,7 @@ export default function Login() {
       if (res.token) {
         localStorage.setItem("token", res.token);
         alert("Login successful");
-        navigate("/chat"); // 🔥 redirect to chat
+        navigate("/chat"); // redirect to chat
       } else {
         alert(res.message || res.error || "Login failed");
       }
@@ -50,7 +50,7 @@ export default function Login() {
           </div>
           <h2 className="auth-title">Welcome Back</h2>
           <p className="auth-subtitle">
-            Enter your credentials to access your SynapseGPT account
+            Enter your credentials to access your SynapseNEXUS account
           </p>
         </div>
 

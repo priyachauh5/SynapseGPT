@@ -1,10 +1,10 @@
 /* ============================================================
-   ChatGPT-Style Left Sidebar Styling for SynapseGPT
+   Sidebar Styling 
    ============================================================ */
 
 .sidebar {
-    background-color: #171717;
-    color: #b4b4b4;
+    background-color: var(--sidebar-bg);
+    color: var(--text-secondary);
     height: 100vh;
     width: 260px;
     min-width: 260px;
@@ -16,12 +16,14 @@
     position: relative;
     z-index: 100;
     overflow: hidden;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid var(--sidebar-border);
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 0.25s ease,
-                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.3s ease,
+                border-color 0.3s ease;
     flex-shrink: 0;
 }
 
@@ -51,7 +53,7 @@
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    padding-top: 6px;
+    padding-top: 8px;
 }
 
 /* Header bar with Brand and Collapse Button */
@@ -59,7 +61,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 14px 6px 14px;
+    padding: 10px 14px 8px 14px;
 }
 
 .sidebarBrand {
@@ -69,40 +71,56 @@
     user-select: none;
 }
 
-.sidebarBrandLogo {
-    height: 22px;
-    width: 22px;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: #fff;
+.sidebarBrandBadge {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--accent-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--accent-glow);
+    color: #ffffff;
+    font-size: 0.82rem;
+    flex-shrink: 0;
 }
 
 .sidebarBrandText {
     font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.sidebarBrandBadgePill {
+    font-size: 0.65rem;
     font-weight: 600;
-    color: #ececec;
-    letter-spacing: -0.2px;
+    padding: 1px 6px;
+    border-radius: 9999px;
+    background: var(--badge-bg);
+    color: var(--badge-color);
+    border: 1px solid var(--badge-border);
 }
 
 .sidebarHeaderCloseBtn {
     background: transparent;
     border: none;
-    color: #888;
+    color: var(--text-muted);
     cursor: pointer;
     padding: 6px 8px;
     border-radius: 6px;
-    font-size: 1.05rem;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.15s, color 0.15s;
+    transition: all 0.15s ease;
     user-select: none;
     margin: 0;
 }
 
 .sidebarHeaderCloseBtn:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background-color: var(--hover-surface);
+    color: var(--text-primary);
 }
 
 /* A. New Chat Button */
@@ -111,40 +129,42 @@
     justify-content: space-between;
     align-items: center;
     margin: 8px 12px;
-    padding: 9px 12px;
-    border-radius: 8px;
-    background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     user-select: none;
 }
 
 .newChatBtn:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.25);
+    background: var(--hover-surface);
+    border-color: var(--card-hover-border);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .newChatBtnLeft {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 9px;
 }
 
 .newChatPlusIcon {
-    font-size: 0.85rem;
-    color: #ececec;
+    font-size: 0.82rem;
+    color: var(--accent-primary);
 }
 
 .newChatBtnText {
     font-size: 0.88rem;
-    font-weight: 500;
-    color: #ececec;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .newChatIcon {
-    font-size: 0.9rem;
-    color: #b4b4b4;
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }
 
 /* B. Search Box */
@@ -156,59 +176,60 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 6px 10px;
-    transition: border-color 0.15s, background-color 0.15s;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 9px;
+    padding: 7px 10px;
+    transition: border-color 0.15s, box-shadow 0.15s;
     box-sizing: border-box;
 }
 
 .sidebarSearchBox:focus-within {
-    border-color: #339cff;
-    background-color: rgba(255, 255, 255, 0.08);
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 2px var(--input-focus-ring);
 }
 
 .searchIcon {
     font-size: 0.8rem;
-    color: #737373;
+    color: var(--text-muted);
     flex-shrink: 0;
 }
 
-/* Overriding any global input styles specifically for search */
 .sidebar .sidebarSearchInput {
     width: 100% !important;
     background: transparent !important;
     border: none !important;
-    padding: 2px 0 !important;
-    font-size: 0.82rem !important;
-    color: #ececec !important;
+    padding: 0 !important;
+    font-size: 0.83rem !important;
+    color: var(--text-primary) !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     outline: none !important;
     box-sizing: border-box !important;
+    font-family: inherit !important;
 }
 
 .sidebarSearchInput::placeholder {
-    color: #707070;
+    color: var(--text-muted);
 }
 
 .clearSearchBtn {
     background: transparent !important;
     border: none !important;
-    color: #888 !important;
+    color: var(--text-muted) !important;
     cursor: pointer !important;
-    padding: 2px 4px !important;
+    padding: 2px !important;
     font-size: 0.75rem !important;
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     border-radius: 4px !important;
+    transition: color 0.15s ease;
 }
 
 .clearSearchBtn:hover {
-    color: #ececec !important;
+    color: var(--text-primary) !important;
 }
 
 /* Scrollable area for Pinned & Recents */
@@ -220,44 +241,41 @@
     box-sizing: border-box;
 }
 
-/* Scrollbar styling */
-.sidebarScrollArea::-webkit-scrollbar {
-    width: 5px;
-}
-
-.sidebarScrollArea::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.sidebarScrollArea::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-}
-
-.sidebarScrollArea::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
 /* Section styling */
 .sidebarSection {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .sectionHeader {
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: space-between;
     padding: 6px 8px;
     font-size: 0.72rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: #737373;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
     user-select: none;
+}
+
+.sectionHeaderLeft {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .sectionHeaderIcon {
     font-size: 0.7rem;
+}
+
+.sectionCountBadge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 9999px;
+    background: var(--badge-bg);
+    color: var(--badge-color);
 }
 
 /* History List & Items */
@@ -273,25 +291,27 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    padding: 7px 10px;
-    margin-bottom: 2px;
+    padding: 8px 10px;
+    margin-bottom: 3px;
     font-size: 0.84rem;
-    border-radius: 8px;
-    color: #b4b4b4;
+    border-radius: 9px;
+    color: var(--text-secondary);
     position: relative;
-    transition: background-color 0.15s, color 0.15s;
+    transition: all 0.15s ease;
     user-select: none;
+    border: 1px solid transparent;
 }
 
 .historyItem:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background-color: var(--hover-surface);
+    color: var(--text-primary);
 }
 
 .historyItem.highlighted {
-    background-color: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    font-weight: 500;
+    background-color: var(--active-surface);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-color: var(--badge-border);
 }
 
 .itemTitleContainer {
@@ -305,8 +325,12 @@
 
 .itemMessageIcon {
     font-size: 0.8rem;
-    color: #737373;
+    color: var(--text-muted);
     flex-shrink: 0;
+}
+
+.historyItem.highlighted .itemMessageIcon {
+    color: var(--accent-primary);
 }
 
 .itemTitle {
@@ -339,33 +363,28 @@
 .itemActionBtn {
     background: transparent !important;
     border: none !important;
-    color: #888 !important;
+    color: var(--text-muted) !important;
     cursor: pointer !important;
     padding: 4px 6px !important;
     margin: 0 !important;
-    border-radius: 4px !important;
+    border-radius: 5px !important;
     font-size: 0.78rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    transition: color 0.15s, background-color 0.15s !important;
+    transition: all 0.15s ease !important;
 }
 
 .itemActionBtn:hover {
-    color: #fff !important;
-    background-color: rgba(255, 255, 255, 0.12) !important;
+    color: var(--text-primary) !important;
+    background-color: var(--hover-surface) !important;
 }
 
 /* Active Pin styling */
 .pinBtn.activePin {
-    color: #339cff !important;
+    color: var(--accent-primary) !important;
 }
 
-.pinBtn.activePin:hover {
-    color: #60b2ff !important;
-}
-
-/* Pinned conversations: Pin icon is clearly visible even when not hovered */
 .historyItem.isPinned .itemActions {
     opacity: 1;
 }
@@ -382,52 +401,49 @@
 }
 
 .historyItem.isPinned .pinBtn.activePin {
-    color: #b4b4b4 !important;
-    opacity: 0.85;
+    color: var(--text-muted) !important;
 }
 
 .historyItem.isPinned:hover .pinBtn.activePin,
 .historyItem.isPinned.highlighted .pinBtn.activePin {
-    color: #339cff !important;
-    opacity: 1;
+    color: var(--accent-primary) !important;
 }
 
 /* Delete trash hover color */
 .deleteBtn:hover {
-    color: #f87171 !important;
+    color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
 }
 
 /* Empty section notice */
 .emptySectionText {
-    font-size: 0.76rem;
-    color: #666;
-    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 6px 10px;
     margin: 0;
     font-style: italic;
     user-select: none;
 }
 
 /* Footer Signature */
-.sign {
+.sidebarFooter {
     padding: 10px 14px;
-    margin: 0 10px;
-    font-size: 13px;
-    text-align: center;
-    border-top: solid 1px rgba(255, 255, 255, 0.08);
-    color: #888;
+    border-top: 1px solid var(--card-border);
     flex-shrink: 0;
     user-select: none;
+    text-align: center;
 }
 
-.sign p {
+.sidebarSignature {
     margin: 0;
+    font-size: 0.76rem;
+    color: var(--text-muted);
 }
 
 /* ============================================================
    Responsive Behavior (Mobile / Small Screens <= 768px)
    ============================================================ */
 
-/* On desktop, backdrop must not render or affect the .app flex layout */
 .sidebarBackdrop {
     display: none;
 }
@@ -444,7 +460,7 @@
         max-width: 280px;
         z-index: 1050;
         transform: translateX(0);
-        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.7);
+        box-shadow: 6px 0 30px rgba(0, 0, 0, 0.5);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                     opacity 0.25s ease;
     }
@@ -470,7 +486,8 @@
         right: 0;
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.65);
-        backdrop-filter: blur(2px);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
         z-index: 1040;
     }
 

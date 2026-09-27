@@ -52,7 +52,7 @@ export default function Signup() {
           </div>
           <h2 className="auth-title">Create an Account</h2>
           <p className="auth-subtitle">
-            Join SynapseGPT to start intelligent conversations today
+            Join SynapseNEXUS to start intelligent conversations today
           </p>
         </div>
 
