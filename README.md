@@ -1,8 +1,8 @@
 # SynapseNEXUS
 
-A full-stack AI-powered chatbot application inspired by ChatGPT, built with modern web technologies and integrated with the **OpenRouter API** for AI-powered conversations.
+SynapseNEXUS is a full-stack AI-powered conversational platform built using the MERN stack and OpenRouter API, designed to deliver intelligent, real-time interactions through a modern and responsive web interface. The application integrates secure user authentication, persistent chat history, RESTful APIs, MongoDB-based data management, and a scalable backend architecture for reliable AI-powered conversations.
 
-SynapseNEXUS demonstrates the development of an AI-enabled web application with a **React frontend, Node.js/Express backend, MongoDB database integration, REST APIs, authentication workflows, and secure environment configuration**.
+Future Enhancements: The platform is planned to evolve with advanced capabilities.
 
 ---
 ## Dashboard
