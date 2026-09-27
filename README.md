@@ -1,12 +1,16 @@
-# 🤖 SynapseGPT
+# SynapseNEXUS
 
 A full-stack AI-powered chatbot application inspired by ChatGPT, built with modern web technologies and integrated with the **OpenRouter API** for AI-powered conversations.
 
-SynapseGPT demonstrates the development of an AI-enabled web application with a **React frontend, Node.js/Express backend, MongoDB database integration, REST APIs, authentication workflows, and secure environment configuration**.
+SynapseNEXUS demonstrates the development of an AI-enabled web application with a **React frontend, Node.js/Express backend, MongoDB database integration, REST APIs, authentication workflows, and secure environment configuration**.
 
 ---
 ## Dashboard
-<img width="1216" height="774" alt="synapseGPT_Dashboard" src="https://github.com/user-attachments/assets/6b23cf43-9ec9-4b24-9380-7758e9b786af" />
+<img width="1491" height="682" alt="synapseN1" src="https://github.com/user-attachments/assets/a68f7c88-dc27-4355-a61d-e75128324231" />
+
+## Chat Interface
+<img width="1374" height="655" alt="SynapseNEXUS" src="https://github.com/user-attachments/assets/83af3f82-0ec8-428d-91a8-d971ab5b52af" />
+
 
 
 ---
